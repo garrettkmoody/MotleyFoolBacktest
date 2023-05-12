@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 import yfinance as yf
 from statistics import mean
 
-DAYS_HOLDING = 60
+DAYS_HOLDING = 180
 
 def getFutureDates(date_string, days_added):
     date_object = datetime.strptime(date_string, '%Y/%m/%d').date()
@@ -25,8 +25,14 @@ def backtest():
                 tickers = line[1].strip().split()
                 fout.write(line[0] + ' - Monthly Return : %')
                 tickerReturns = []
+                # Only buy first 3 stocks
+                if len(tickers) > 3:
+                    tickers = tickers[:3]
+
                 for ticker in tickers:
                     print(f"TICKER : {ticker}")
+                    purchasePrice = None
+                    salePrice = None
                     stock = yf.download(ticker, interval='1d', start=currentDates[0], end=currentDates[1])
                     if len(stock['Close']) > 0:
                         purchasePrice = stock['Close'][0]
@@ -37,8 +43,9 @@ def backtest():
                         salePrice = stock['Close'][0]
                     else:
                         print("No stock information.")
-
-                    tickerReturns.append((salePrice / purchasePrice) - 1)
+                    
+                    if purchasePrice and salePrice:
+                        tickerReturns.append((salePrice / purchasePrice) - 1)
                 fout.write(str(mean(tickerReturns)) + '\n')
                 totalReturn += mean(tickerReturns)
             

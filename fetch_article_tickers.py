@@ -7,12 +7,12 @@ MONTHS = ['January', 'February', 'March', 'April', 'May', 'June',
 QUERY_SENTENCE = "The Motley Fool top stocks"
 
 # Set to be the beginning of backtest timeframe
-START_YEAR = 2019
-START_MONTH_INDEX = 10
+START_YEAR = 2016
+START_MONTH_INDEX = 0
 
 # Set to be the end of backtest timeframe
 END_YEAR = 2020
-END_MONTH_INDEX = 4
+END_MONTH_INDEX = 0
 
 
 def fetchArticleTickers():
